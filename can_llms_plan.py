@@ -1316,9 +1316,20 @@ def gpu_stats():
 
 @app.cell(hide_code=True)
 def llm_config():
-    # Model menu: pulled straight from featherlm.MODELS, so models you add to the library
-    # show up here automatically. Nothing loads by default; a pick loads it in-kernel.
-    MODEL_MENU = {_k: _v for _k, _v in featherlm.MODELS.items() if _v.get("kind") == "bf16"}
+    # Curated menu: clean display names over featherlm's verbose registry keys.
+    # featherlm stays the source of specs (ids + kinds); we pick the lineup, label it,
+    # and ★ the model this notebook is tuned around. Nothing loads by default.
+    _by_id = {_v["id"]: _v for _v in featherlm.MODELS.values()}
+    _curated = [
+        ("Qwen/Qwen3-4B-Instruct-2507", "Qwen3-4B-Instruct"),
+        ("Qwen/Qwen3-8B", "Qwen3-8B"),
+        ("Qwen/Qwen3-14B", "Qwen3-14B"),
+        ("microsoft/phi-4", "Phi-4"),
+        ("Qwen/Qwen3-32B", "Qwen3-32B"),
+        ("Qwen/Qwen3-30B-A3B-Instruct-2507", "Qwen3-30B-A3B"),
+        ("google/gemma-4-31B-it", "★ Gemma-4-31B-it"),
+    ]
+    MODEL_MENU = {_lbl: _by_id[_id] for _id, _lbl in _curated if _id in _by_id}
     model_select = mo.ui.dropdown(
         options=["Pick a model to load…"] + list(MODEL_MENU.keys()),
         value="Pick a model to load…", label="Model")
@@ -1326,9 +1337,9 @@ def llm_config():
     llm_seed = mo.ui.number(start=0, stop=99999, value=3407, label="🎲 LLM seed")
     mo.vstack([
         mo.md("Pick a model and it loads **in-kernel** on the RTX PRO 6000 **only when you "
-              "select it** (nothing loads by default). The menu is **featherlm's own model "
-              "list**, so it grows as the library does, from a 4B up to a **117B** gpt-oss "
-              "(and a 235B if you're patient). Switching reloads."),
+              "select it** (nothing loads by default). A curated set of open-weight "
+              "models from 4B up to ~31B; **★ Gemma-4-31B-it** is the pick this notebook is "
+              "tuned around. Switching models reloads."),
         model_select,
         mo.md("🎲 **Seed** &middot; pins the model's sampling so a run is identical "
               "reload-after-reload. Change it to explore the *distribution* of how the "
@@ -1374,7 +1385,7 @@ def llm_load(MODEL_MENU, model_select):
 
     # featherlm auto-picks the fastest path; bf16 warms the compiler (~1 min) then is fast.
     _t = _time.time()
-    with mo.status.spinner(title=f"Loading {MODEL_ID} via featherlm…"):
+    with mo.status.spinner(title=f"Loading {MODEL_ID}…"):
         llm = featherlm.load(MODEL_ID, kind=_kind)
         tokenizer = llm.tok
     mo.md(
@@ -1499,7 +1510,7 @@ def act3_attempt(
 
     def _chips(actions, busy):
         if not actions:
-            return mo.md("🧠 _thinking… (no plan committed yet)_" if busy
+            return mo.md("⏳ _working on a plan… (nothing committed yet)_" if busy
                          else "_No plan found in the reply._")
         return mo.vstack([
             mo.md(f"Plan · {len(actions)} actions"),
