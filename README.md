@@ -14,7 +14,7 @@
   <img src="mo.png" alt="Mo the Mossball in a Wanderland grid; a language model's plan walks him toward the lava" width="240">
 </p>
 
-Meet **Mo the Mossball**. His world is a grid with gems to collect, an exit to reach, and lava that kills on contact. A child can solve it easily. Ask an LLM and it will often send him straight into the lava. We observe why this happens, what helps and how it explains the industry's recent move to agents.
+Meet **Mo the Mossball**. His world is a puzzle with gems to collect, an exit to reach, and lava that kills on contact. A child can solve it easily. Ask an LLM and it will often send him straight into the lava. We observe why this happens, what helps and how it explains the industry's recent move to agents.
 
 The notebook was tailored and tested to run in molab, but can be adapted to run on any hardware, or using off-the-shelf LLM APIs.
 
