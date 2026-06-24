@@ -1,0 +1,10 @@
+# Python / OS / editor
+__pycache__/
+.venv/
+*.pyc
+.DS_Store
+.idea/
+.vscode/
+
+# marimo
+__marimo__/
