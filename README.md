@@ -4,7 +4,7 @@
 
 <samp>
   <p align="center">
-    <a href="https://molab.marimo.io/github/ktaletsk/can-llms-plan/blob/main/can_llms_plan.py">
+    <a href="https://molab.marimo.io/github/ktaletsk/can-llms-plan/blob/main/can_llms_plan.py/server">
       <img src="https://marimo.io/molab-shield.svg" alt="Open in molab">
     </a>
   </p>
