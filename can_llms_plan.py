@@ -4,7 +4,7 @@
 #     "datasets==5.0.0",
 #     "matplotlib==3.11.0",
 #     "pandas==3.0.3",
-#     "wanderland==0.1.1",
+#     "wanderland==0.1.2",
 # ]
 # ///
 
